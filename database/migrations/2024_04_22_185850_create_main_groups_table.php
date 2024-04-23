@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('main_groubs', function (Blueprint $table) {
+        Schema::create('main_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->date('date_of_entry')->nullable();
+            $table->date('exit_date')->nullable();
+            $table->integer('office_num')->nullable();
+            $table->integer('pilgrims_count')->default(0);
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('main_groubs');
+        Schema::dropIfExists('main_groups');
     }
 };

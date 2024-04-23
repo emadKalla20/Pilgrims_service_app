@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->text('message');
+            $table->string('title');
+            $table->unsignedBigInteger('user_id');
+            $table->json('pilgrims');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('no action')
+                ->onUpdate('CASCADE');
         });
     }
 

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('pilgrims', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('PID');
+            $table->integer('unit');
+            $table->string('passport');
+            $table->string('gender');
+            $table->string('guide')->nullable();
+            $table->integer('room')->nullable();
             $table->timestamps();
         });
     }
