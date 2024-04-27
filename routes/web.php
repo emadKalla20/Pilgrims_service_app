@@ -18,5 +18,8 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/admin_register',[App\Http\Controllers\Auth\RegisterController::class,'showAdminRegistrationForm']);
+Route::post('/create_admin',[App\Http\Controllers\Auth\RegisterController::class,'adminRegister'])->name('create_admin');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

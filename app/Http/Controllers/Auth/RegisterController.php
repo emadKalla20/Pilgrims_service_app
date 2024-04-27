@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +53,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_id_num' => ['required', 'numeric', 'digits:10'],
+            'phone_num' => ['required', 'numeric','digits:9'],
         ]);
     }
 
@@ -68,5 +71,31 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function showAdminRegistrationForm(){
+        return view('auth\create_admin');
+    }
+
+    protected function createAdmin(array $data){
+
+//        $this->validate($request,[
+//            'name' => ['required', 'string', 'max:255'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+//            'password' => ['required', 'string', 'min:8', 'confirmed'],
+//            'user_id_num' => ['required', 'numeric', 'digits:10'],
+//            'phone_num' => ['required', 'numeric','digits:9'],
+//        ]);
+
+
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'user_id_num' => $data['user_id_num'],
+            'phone_num' => $data['phone_num'],
+            'role_id' => 1
+        ]);
+
     }
 }
