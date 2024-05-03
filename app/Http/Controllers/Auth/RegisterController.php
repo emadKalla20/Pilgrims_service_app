@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -70,6 +72,9 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'user_id_num' => $data['user_id_num'],
+            'phone_num' => $data['phone_num'],
+            'role_id' => $data['role']
         ]);
     }
 
@@ -77,15 +82,23 @@ class RegisterController extends Controller
         return view('auth\create_admin');
     }
 
+    /**
+     * Create a admin user.
+     *
+     */
+
     protected function createAdmin(array $data){
 
-//        $this->validate($request,[
-//            'name' => ['required', 'string', 'max:255'],
-//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-//            'password' => ['required', 'string', 'min:8', 'confirmed'],
-//            'user_id_num' => ['required', 'numeric', 'digits:10'],
-//            'phone_num' => ['required', 'numeric','digits:9'],
-//        ]);
+        $role = new Role;
+        if(!$role->isThereAdminRole()){
+
+            $role->name = 'admin';
+            $role->administration_level = 3;
+            $role->save();
+            $role_id = $role->id;
+        }else{
+            $role_id = Role::where('name','like',"%admin%")->first()->id;
+        }
 
 
         return User::create([
@@ -94,7 +107,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'user_id_num' => $data['user_id_num'],
             'phone_num' => $data['phone_num'],
-            'role_id' => 1
+            'role_id' => $role_id
         ]);
 
     }
