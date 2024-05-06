@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PilgrimController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,5 +18,6 @@ Auth::routes();
 Route::get('/admin_register',[RegisterController::class,'showAdminRegistrationForm']);
 Route::post('/create_admin',[RegisterController::class,'adminRegister'])->name('create_admin');
 
+Route::get('/pilgrim',[PilgrimController::class,'index'])->name('pilgrim.index');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

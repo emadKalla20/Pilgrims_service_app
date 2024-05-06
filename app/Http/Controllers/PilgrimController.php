@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pilgrim;
 use Illuminate\Http\Request;
+use Shuchkin\SimpleXLSX;
 
 class PilgrimController extends Controller
 {
@@ -12,7 +13,38 @@ class PilgrimController extends Controller
      */
     public function index()
     {
-        //
+        if ( $xlsx = SimpleXLSX::parse( $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'storage/pilgrims.xlsx') ) {
+
+       $head = [
+                'conformity_num',
+                'main_group',
+                'subgroup',
+                'guide',
+                'pid',
+                'unit',
+                'name',
+                'passport',
+                'gender',
+                'hotel_id',
+                'room'
+            ];
+
+            $all_data = [];
+            $data = [];
+            $xsl_rows = $xlsx->rows();
+
+            unset($xsl_rows[0]);
+
+            foreach ($xsl_rows as $row){
+                for ($i = 0;$i < count($head);$i++){
+                   $data += [$head[$i] => $row[$i]];
+                }
+                array_push($all_data,$data);
+            }
+        } else {
+            echo SimpleXLSX::parseError();
+        }
+        return view('pilgrims\index',compact('all_data'));
     }
 
     /**
